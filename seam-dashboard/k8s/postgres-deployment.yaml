@@ -1,0 +1,34 @@
+apiVersion: apps/v1 # tells which version of the api k8s should use, for deployments apps/v1 api is the standard
+kind: Deployment # as this is a deployment
+metadata: # holds basic identifying information
+  name: postgres # the name we are giving to this deployment, this will be used later on to identify it in the cluster
+  namespace: new-beginnings
+  labels:
+    k8s-app: postgres 
+spec: # describes the desired state of the deployment
+  replicas: 1 # tells k8s to provision one pod for this deployment
+  selector: # this part defines how we will identify the pods for this deployment
+    matchLabels: # we will match the labels for deployment
+      k8s-app: postgres # Only pods with the label apps:postgres are part of this deployment
+  template: # gives the blueprint to the deployment to create pods
+    metadata: # metadata.labels assigns the label app:postgres to each of the pods that are provisioned by this deployment for easy identification 
+      labels:
+        k8s-app: postgres
+    spec:
+      containers: # Lists the containers that will run inside the pod
+      - name: postgres # references this container with the given name, here postgres
+        image: postgres:latest # image we will be using from hub.docker.com, sizes generally follow: alpine < noble < slim-bullseye < slim-bookworm
+        env: # sets environment variables for our container
+        - name: POSTGRES_PASSWORD
+          value: "super_duper_secret_postgres_password"
+        - name: POSTGRES_DB # specifies the default db name to be created when postgreSQL starts
+          value: "podtracker"
+        ports: # tells k8s to listen on the given port
+        - containerPort: 5432
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "500m"
+          requests:
+            memory: "100Mi"
+            cpu: "50m"

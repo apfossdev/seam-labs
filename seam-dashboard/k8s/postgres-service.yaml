@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service # name of the service 
+  namespace: new-beginnings # specifies the namespace where the service will be created
+  labels:
+    k8s-app: postgres # a label that tags the service as part of the postgres application
+spec:
+  selector: # here the selector specifies how the service should route the traffic
+    k8s-app: postgres # the service here will route the traffic to pods that have this label
+  ports:
+  - protocol: TCP
+    port: 5432 # the port on which the service is exposed at inside the cluster, clients will connect here
+    targetPort: 5432 # the port on the pods that the service will forward/ send traffic to
+  type: ClusterIP
