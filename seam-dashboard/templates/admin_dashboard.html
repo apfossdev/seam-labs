@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+</head>
+<body>
+  <h1>Welcome, Admin {{ username }}!</h1>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul>
+      {% for category, msg in messages %}
+        <li class="{{ category }}">{{ msg }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <!-- List existing pods -->
+  <h2>Existing Pods</h2>
+  {% if pods %}
+    <ul>
+    {% for pod in pods %}
+      <li>
+        {{ pod }}
+        <form method="post" style="display:inline;">
+          <input type="hidden" name="pod_name" value="{{ pod }}">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>No pods found in this namespace.</p>
+  {% endif %}
+
+  <p><a href="{{ url_for('logout') }}">Logout</a></p>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+</head>
+<body>
+  <h1>Login</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul>
+      {% for category, msg in messages %}
+        <li class="{{ category }}">{{ msg }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <form method="post">
+    <label>Username:</label><br>
+    <input name="username" type="text" required><br><br>
+
+    <label>Password:</label><br>
+    <input name="password" type="password" required><br><br>
+
+    <button type="submit">Log In</button>
+  </form>
+</body>
+</html>

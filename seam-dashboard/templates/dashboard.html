@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <h1>Welcome, {{ username }}!</h1>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <ul>
+      {% for category, msg in messages %}
+      <li class="{{ category }}">{{ msg }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+
+    <h2>Create a New Pod</h2>
+    <form method="post" action="{{ url_for('create_pod') }}">
+      <label>Pod Name:</label><br />
+      <input name="pod_name" type="text" required /><br /><br />
+
+      <label>Docker Image:</label><br />
+      <select name="image" required>
+        <option value="nginx:latest">nginx:latest</option>
+        <option value="node:16-alpine">node:16-alpine</option>
+        <option value="redis:6.2">redis:6.2</option>
+        <option value="postgres:latest">postgres:latest</option>
+        <option value="python:3.9-slim">python:3.9-slim</option></select
+      ><br /><br />
+
+      <button type="submit">Create Pod</button>
+    </form>
+
+    <h2>Create a New Deployment</h2>
+    <form method="post" action="{{ url_for('create_deployment') }}">
+      <label>Deployment Name:</label><br />
+      <input name="deployment_name" type="text" required /><br /><br />
+
+      <label>Docker Image:</label><br />
+      <select name="image" required>
+        <option value="nginx:latest">nginx:latest</option>
+        <option value="node:16-alpine">node:16-alpine</option>
+        <option value="redis:6.2">redis:6.2</option>
+        <option value="postgres:latest">postgres:latest</option>
+        <option value="python:3.9-slim">python:3.9-slim</option></select
+      ><br /><br />
+
+      <label>Replicas (1-5):</label><br />
+      <input
+        name="replicas"
+        type="number"
+        min="1"
+        max="5"
+        value="1"
+        required
+      /><br /><br />
+
+      <label>CPU Requests (e.g., 100m):</label><br />
+      <input
+        name="cpu_requests"
+        type="text"
+        placeholder="100m"
+        required
+      /><br /><br />
+
+      <label>Memory Requests (e.g., 128Mi):</label><br />
+      <input
+        name="memory_requests"
+        type="text"
+        placeholder="128Mi"
+        required
+      /><br /><br />
+
+      <label>CPU Limits (e.g., 500m):</label><br />
+      <input
+        name="cpu_limits"
+        type="text"
+        placeholder="500m"
+        required
+      /><br /><br />
+
+      <label>Memory Limits (e.g., 512Mi):</label><br />
+      <input
+        name="memory_limits"
+        type="text"
+        placeholder="512Mi"
+        required
+      /><br /><br />
+
+      <button type="submit">Create Deployment</button>
+    </form>
+
+    <h2>Existing Pods</h2>
+    {% if pods %}
+    <ul>
+      {% for pod in pods %}
+      <li>{{ pod }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No pods found in this namespace.</p>
+    {% endif %}
+
+    <h2>Existing Deployments</h2>
+    {% if deployments %}
+    <ul>
+      {% for deployment in deployments %}
+      <li>{{ deployment }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No deployments found in this namespace.</p>
+    {% endif %}
+
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+  </body>
+</html>
